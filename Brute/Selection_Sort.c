@@ -20,8 +20,6 @@ void Selection_sort(int *array,int len)
 		}
 		Swap(&array[Min],&array[i]);
 	}
-
-
 }
 
 int main()
