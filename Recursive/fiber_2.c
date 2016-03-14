@@ -28,6 +28,8 @@ int *fiber2(int n)
 		perror("Memory leak");
 		exit(1);
 	}
+	//if return A,free(Temp1) will free array.
+	//So need to return Dynamic memory.
 	if(n==1)
 	{
 		memcpy(Temp1,A,4*sizeof(int));
