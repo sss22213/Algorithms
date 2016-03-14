@@ -33,17 +33,17 @@ int *fiber2(int n)
 	{
 		Temp1=fiber2(n/2);
 		doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
-		doub_Mat_mul(Temp2,4,A,4,Temp3,4);
+		//doub_Mat_mul(Temp2,4,A,4,Temp3,4);
 		//free(Temp1);
 		//free(Temp2);
-		return Temp3;
+		return Temp2;
 	}
 	//n is odd
 	else
 	{
 		Temp1=fiber2((n-1)/2);
                 doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
-                doub_Mat_mul(Temp2,4,A,4,Temp3,4);
+               	doub_Mat_mul(Temp2,4,A,4,Temp3,4);
                 //free(Temp1);
                 //free(Temp2);
                 return Temp3;
@@ -54,7 +54,7 @@ int main(int argv,char *argc[])
 {
 	int *A;
 	A=(int*)malloc(4*sizeof(int));
-	A=fiber2(5);	
+	A=fiber2(atoi(argc[1]));	
 	for(int i=0;i<4;i++)
 	{
 		printf("%d",A[i]);
