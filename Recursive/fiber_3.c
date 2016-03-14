@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 //two*two phalanx mul
 void doub_Mat_mul(int *A,int lenA,int *B,int lenB,int *C,int lenC)
 {
@@ -17,6 +16,7 @@ void doub_Mat_mul(int *A,int lenA,int *B,int lenB,int *C,int lenC)
 int *fiber2(int n)
 {
 	static int A[4]={0,1,1,1};
+	if(n==1)return A;
 	int *Temp1;
 	Temp1=(int*)malloc(4*sizeof(int));
         int *Temp2;
@@ -28,16 +28,12 @@ int *fiber2(int n)
 		perror("Memory leak");
 		exit(1);
 	}
-	if(n==1)
-	{
-		memcpy(Temp1,A,4*sizeof(int));
-		return Temp1;
-	}
 	//n is even
 	if(n%2==0)
 	{
 		Temp1=fiber2(n/2);
 		doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
+		//doub_Mat_mul(Temp2,4,A,4,Temp3,4);
 		free(Temp1);
 		free(Temp3);
 		return Temp2;
@@ -58,7 +54,7 @@ int main(int argv,char *argc[])
 {
 	int *A;
 	A=(int*)malloc(4*sizeof(int));
-	A=fiber2(atoi(argc[1]));	
+	A=fiber2(5);	
 	for(int i=0;i<4;i++)
 	{
 		printf("%d",A[i]);
