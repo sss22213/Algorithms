@@ -38,7 +38,7 @@ int *fiber2(int n)
 	//n is even
 	if(n%2==0)
 	{
-		Temp1=fiber2(n/2);
+		memcpy(Temp1,fiber2(n/2),4*sizeof(int));
 		doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
 		free(Temp1);
 		free(Temp3);
@@ -47,7 +47,7 @@ int *fiber2(int n)
 	//n is odd
 	else
 	{
-		Temp1=fiber2((n-1)/2);
+		memcpy(Temp1,fiber2((n-1)/2),4*sizeof(int));
                 doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
                	doub_Mat_mul(Temp2,4,A,4,Temp3,4);
  	       	free(Temp1);
@@ -60,6 +60,11 @@ int main(int argv,char *argc[])
 {
 	int *A;
 	A=(int*)malloc(4*sizeof(int));
+	if(argv<2)
+	{
+		perror("Please input parameter");
+		exit(1);
+	}
 	A=fiber2(atoi(argc[1]));	
 	for(int i=0;i<4;i++)
 	{

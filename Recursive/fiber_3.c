@@ -1,5 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+typedef struct _items items;
+typedef struct _items
+{
+	int A[4];
+	items *next;
+
+}items;
+
+items *newnode(items* head,items* tail)
+{
+	items *node;
+	node=(items*)malloc(sizeof(items));
+	if(node==NULL)
+	{
+		perror("Memory leak");
+		exit(1);
+	}
+	head->next=node;
+	node->next=tail;
+	return node;
+}
 //two*two phalanx mul
 void doub_Mat_mul(int *A,int lenA,int *B,int lenB,int *C,int lenC)
 {
@@ -13,53 +34,51 @@ void doub_Mat_mul(int *A,int lenA,int *B,int lenB,int *C,int lenC)
 	C[2]=A[2]*B[0]+A[3]*B[2];
 	C[3]=A[2]*B[1]+A[3]*B[3];
 }	
-int *fiber2(int n)
+items *fiber2(int n,items *head,items *tail)
 {
 	static int A[4]={0,1,1,1};
 	if(n==1)return A;
-	int *Temp1;
-	Temp1=(int*)malloc(4*sizeof(int));
-        int *Temp2;
-	Temp2=(int*)malloc(4*sizeof(int));
-        int *Temp3;
-	Temp3=(int*)malloc(4*sizeof(int));
-	if(Temp1==NULL || Temp2==NULL || Temp3==NULL)
+	items *node=newnode(head,tail);
+	if(node->next==NULL)
+	{
+		perror("the node is tail");
+		exit(1);
+	}
+	if(node==NULL)
 	{
 		perror("Memory leak");
 		exit(1);
 	}
+
 	//n is even
 	if(n%2==0)
 	{
-		Temp1=fiber2(n/2);
+		fiber2(n/2,head,tail);
 		doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
-		//doub_Mat_mul(Temp2,4,A,4,Temp3,4);
-		free(Temp1);
-		free(Temp3);
-		return Temp2;
+		return node;
 	}
 	//n is odd
 	else
 	{
-		Temp1=fiber2((n-1)/2);
+		fiber2((n-1)/2,head,tail);
                 doub_Mat_mul(Temp1,4,Temp1,4,Temp2,4);
                	doub_Mat_mul(Temp2,4,A,4,Temp3,4);
- 	       	free(Temp1);
-                free(Temp2);
-                return Temp3;
+                return node;
 	}
 	
 }
 int main(int argv,char *argc[])
 {
-	int *A;
-	A=(int*)malloc(4*sizeof(int));
-	A=fiber2(5);	
-	for(int i=0;i<4;i++)
+	items *head;
+	head=(items*)malloc(sizeof(items));
+	itmes *tail;
+	tail=(items*)malloc(sizeof(items));
+	if(head==NULL || tail==NULL)
 	{
-		printf("%d",A[i]);
+		perror("memory leak");
+		exit(1);
 	}
-	free(A);
+	fiber2(5,head,tail);
 	printf("\n");
 	return 0;
 }
