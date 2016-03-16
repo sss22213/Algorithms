@@ -8,7 +8,7 @@ typedef struct _items
 
 }items;
 
-items *newnode(items* head,items* tail)
+items *newnode(items* head)
 {
 	items *node;
 	node=(items*)malloc(sizeof(items));
@@ -18,7 +18,7 @@ items *newnode(items* head,items* tail)
 		exit(1);
 	}
 	head->next=node;
-	node->next=tail;
+	node->next=NULL;
 	return node;
 }
 //two*two phalanx mul
